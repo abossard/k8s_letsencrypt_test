@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bosskube-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bosskube-app
+  minReadySeconds: 5 
+  template:
+    metadata:
+      labels:
+        app: bosskube-app
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: blogsoftcor
+        image: nginx
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bosskube-service
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: bosskube-app
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: bosskube-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - backend:
+              serviceName: bosskube-service
+              servicePort: 80
+            path: /

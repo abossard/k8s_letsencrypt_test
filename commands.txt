@@ -1,0 +1,23 @@
+Install Cert-Manager:
+kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.14.1/cert-manager.yaml
+
+Install issuer
+kubectl apply -f issuer.yaml
+kubectl describe issuer
+
+
+Verify the installation
+kubectl get pods --namespace cert-manager
+
+Deploy application
+kubectl apply -f .\bosskube.yaml
+
+Docker for Desktop
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/cloud-generic.yaml
+
+Deploy ingress
+kubectl apply -f .\bosskube_ingress.yaml
+
+Follow the steps here:
+https://cert-manager.io/docs/tutorials/acme/ingress/#step-6-configure-let-s-encrypt-issuer
