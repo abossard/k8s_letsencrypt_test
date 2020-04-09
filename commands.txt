@@ -1,5 +1,10 @@
+
+az group create -n aks_shared -l EastUS2
+az aks create -n anbossarusaks -g aks_shared -l EastUS2 --node-count 2 --load-balancer-sku standard --generate-ssh-keys -s Standard_A2_v2 --kubernetes-version 1.15.10
+
 Install Cert-Manager:
 kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.14.1/cert-manager.yaml
+kubectl get pods --namespace cert-manager
 
 Install issuer
 kubectl apply -f issuer.yaml
@@ -7,17 +12,17 @@ kubectl describe issuer
 
 
 Verify the installation
-kubectl get pods --namespace cert-manager
 
 Deploy application
-kubectl apply -f .\bosskube.yaml
+kubectl apply -f bosskube.yaml
 
 Cloud generic
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/cloud-generic.yaml
 
 Deploy ingress
-kubectl apply -f .\bosskube_ingress.yaml
+kubectl apply -f bosskube_ingress.yaml
+kubectl get certificate
 
 Follow the steps here:
 https://cert-manager.io/docs/tutorials/acme/ingress/#step-6-configure-let-s-encrypt-issuer

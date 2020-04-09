@@ -8,10 +8,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - localhost
+    - example.example.com
     secretName: localhost-staging-certificate
   rules:
-  - host: localhost
+  - host: example.example.com
     http:
       paths:
       - backend:
